@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "34487567396",
+    "project_id": "cineapp-e4640",
+    "storage_bucket": "cineapp-e4640.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:34487567396:android:6f11253659d0151dfec4b1",
+        "android_client_info": {
+          "package_name": "co.edu.cineapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcK7IrYDKg1GRUzatWobyzAs6UFQTwfFU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

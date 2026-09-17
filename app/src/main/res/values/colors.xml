@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Paleta oficial CineApp -->
+    <color name="cine_marron">#2D1B12</color>
+    <color name="cine_coral">#E76F51</color>
+    <color name="cine_naranja">#F4A261</color>
+    <color name="cine_amarillo">#E9C46A</color>
+    <color name="cine_azul">#264653</color>
+
+    <!-- Colores auxiliares -->
+    <color name="cine_blanco">#FFFFFF</color>
+    <color name="cine_negro">#000000</color>
+    <color name="cine_gris">#757575</color>
+    <color name="cine_gris_claro">#EEEEEE</color>
+    <color name="cine_fondo">#FFF9F5</color>
+
+</resources>
