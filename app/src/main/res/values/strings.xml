@@ -1,3 +1,27 @@
 <resources>
     <string name="app_name">CINEAPP</string>
+    
+    <!-- Pantalla de inicio (initiation)-->
+    <string name="tvSaludo">Hola, Luisa</string>
+    <string name="tvTitle">¿Qué vemos hoy?</string>
+    <string name="tvAvatar">L</string>
+    <string name="etSearch">Buscar película</string>
+    <string name="cpTodas">Todas</string>
+    <string name="cpCienciaFiccion">Ciencia Ficción</string>
+    <string name="cpSuspenso">Suspenso</string>
+    <string name="cpDrama">Drama</string>
+    <string name="cpAccion">Acción</string>
+    <string name="cpAventura">Aventura</string>
+    <string name="cpComedia">Comedia</string>
+    <string name="cpFantasia">Fantasia</string>
+    <string name="cpRomance">Romance</string>
+    <string name="cpTerror">Terror</string>
+    <string name="cpMusical">Musical</string>
+    <string name="tvSubtitle1">Destacada de la semana</string>
+    <string name="tvTitleFamous">Hombre Araña</string>
+    <string name="tvInfoFamous">2025 · Ciencia Ficción · 133 min</string>
+    <string name="btnVerMas">Ver más</string>
+    <string name="tvSubtitle2">Todo el catálogo</string>
+    <string name="tvTitleMovie">Spiderman Brand New Day</string>
+    <string name="tvInfoMovie">2026 · Ciencia Ficción</string>
 </resources>
