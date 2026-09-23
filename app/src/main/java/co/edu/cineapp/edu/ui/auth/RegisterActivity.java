@@ -1,4 +1,4 @@
-package co.edu.cineapp;
+package co.edu.cineapp.edu.ui.auth;
 
 import android.os.Bundle;
 import android.widget.Button;
@@ -15,6 +15,8 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+
+import co.edu.cineapp.R;
 
 public class RegisterActivity extends AppCompatActivity {
 
