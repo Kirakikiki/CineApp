@@ -90,7 +90,7 @@ public class RegisterActivity extends AppCompatActivity {
                 etCorreo.getText().toString().trim();
 
         String password =
-                etPassword.getText().toString();
+                etPassword.getText().toString(); //Almacena la contraseña dentro de firebase
 
         String confirmPassword =
                 etConfirmPassword.getText().toString();
@@ -153,6 +153,7 @@ public class RegisterActivity extends AppCompatActivity {
         btnRegistrarse.setEnabled(false);
 
         // Crear usuario en Firebase Authentication
+        // Firebase no guarda datos en una tabla solo genera la autenticacion
         mAuth.createUserWithEmailAndPassword(correo, password)
                 .addOnCompleteListener(this, task -> {
 
