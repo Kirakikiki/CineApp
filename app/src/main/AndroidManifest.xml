@@ -29,7 +29,11 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".InitiationActivity"
+            android:name=".CatalogoActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".ResenaActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
     </application>
