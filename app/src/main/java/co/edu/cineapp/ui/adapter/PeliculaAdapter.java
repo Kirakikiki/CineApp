@@ -8,56 +8,166 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import co.edu.cineapp.R;
 import co.edu.cineapp.data.entities.Pelicula;
 
-public class PeliculaAdapter extends RecyclerView.Adapter<PeliculaAdapter.PeliculaViewHolder> { //adaptador del RecyclerView
-    public interface OnPeliculaClick { //interfaz para avisar a la pantalla que pelicula se toco
-        void alTocar(Pelicula pelicula); //Metodo para implementar el catalogo
+public class PeliculaAdapter
+        extends RecyclerView.Adapter<PeliculaAdapter.PeliculaViewHolder> {
+
+    // =========================================================
+    // INTERFAZ PARA DETECTAR CUANDO SE TOCA UNA PELÍCULA
+    // =========================================================
+
+    public interface OnPeliculaClick {
+
+        void alTocar(Pelicula pelicula);
     }
 
-    private List<Pelicula> lista; //Peliculas que se muestran
-    private final OnPeliculaClick listener; //escucha los clicks
 
-    public PeliculaAdapter(List<Pelicula> lista, OnPeliculaClick listener) { //constructor
-        this.lista = lista; //Guarda la lista
-        this.listener = listener; //Guarda el listener
+    // =========================================================
+    // VARIABLES
+    // =========================================================
+
+    private List<Pelicula> lista;
+
+    private final OnPeliculaClick listener;
+
+
+    // =========================================================
+    // CONSTRUCTOR
+    // =========================================================
+
+    public PeliculaAdapter(
+            List<Pelicula> lista,
+            OnPeliculaClick listener
+    ) {
+
+        this.lista = lista != null
+                ? lista
+                : new ArrayList<>();
+
+        this.listener = listener;
     }
 
-    public void actualizarLista(List<Pelicula> nuevaLista) { //Cambia la lista para filtrar
-        this.lista = nuevaLista; // Reemplaza los datos
-        notifyDataSetChanged(); // Le indica al RecyclerView que se redibuje
+
+    // =========================================================
+    // ACTUALIZAR LISTA
+    // =========================================================
+
+    public void actualizarLista(List<Pelicula> nuevaLista) {
+
+        if (nuevaLista == null) {
+
+            this.lista = new ArrayList<>();
+
+        } else {
+
+            this.lista = nuevaLista;
+        }
+
+        notifyDataSetChanged();
     }
+
+
+    // =========================================================
+    // CREAR TARJETA
+    // =========================================================
 
     @NonNull
     @Override
-    public PeliculaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) { //Crea la vista de una tarjeta
-        View view = LayoutInflater.from(parent.getContext()) // Toma el inflater de layouts
-                .inflate(R.layout.activity_item_pelicula, parent, false); //Infla item_pelicula.xml
-        return new PeliculaViewHolder(view); //Devuelve el contenedor de esa tarjeta
+    public PeliculaViewHolder onCreateViewHolder(
+            @NonNull ViewGroup parent,
+            int viewType
+    ) {
+
+        View view = LayoutInflater
+                .from(parent.getContext())
+                .inflate(
+                        R.layout.activity_item_pelicula,
+                        parent,
+                        false
+                );
+
+        return new PeliculaViewHolder(view);
     }
+
+
+    // =========================================================
+    // CARGAR DATOS EN LA TARJETA
+    // =========================================================
 
     @Override
-    public void onBindViewHolder(@NonNull PeliculaViewHolder holder, int position) { // Llena una tarjeta con datos
-        Pelicula pelicula = lista.get(position); //Obtener la pelicula de esa posicion
-        holder.tvItemTitulo.setText(pelicula.getTitulo()); // Muestra el titulo
-        holder.itemView.setOnClickListener(view -> listener.alTocar(pelicula)); // al tocar avisa al catalogo
-    }
+    public void onBindViewHolder(
+            @NonNull PeliculaViewHolder holder,
+            int position
+    ) {
 
-    @Override
-    public int getItemCount() { //cantidad de tarjetas
-        return lista.size(); // Es el tamaño de la lista
-    }
+        Pelicula pelicula = lista.get(position);
 
-    static class PeliculaViewHolder extends RecyclerView.ViewHolder { //guardar las vistas de una tarjeta
-        private TextView tvItemTitulo; //Titulo dentro de la tarjeta
+        // Título
+        if (pelicula.getTitulo() != null) {
 
-        PeliculaViewHolder(@NonNull View itemView){ //Constructor
-            super(itemView); //llama al padre
-            tvItemTitulo = itemView.findViewById(R.id.tvItemTitulo); //busca el titulo de la tarjeta
+            holder.tvItemTitulo.setText(
+                    pelicula.getTitulo()
+            );
+
+        } else {
+
+            holder.tvItemTitulo.setText(
+                    "Sin título"
+            );
         }
 
+
+        // Click sobre la película
+        holder.itemView.setOnClickListener(
+                view -> {
+
+                    if (listener != null) {
+
+                        listener.alTocar(pelicula);
+                    }
+                }
+        );
+    }
+
+
+    // =========================================================
+    // CANTIDAD DE PELÍCULAS
+    // =========================================================
+
+    @Override
+    public int getItemCount() {
+
+        return lista != null
+                ? lista.size()
+                : 0;
+    }
+
+
+    // =========================================================
+    // VIEW HOLDER
+    // =========================================================
+
+    static class PeliculaViewHolder
+            extends RecyclerView.ViewHolder {
+
+        private final TextView tvItemTitulo;
+
+
+        PeliculaViewHolder(
+                @NonNull View itemView
+        ) {
+
+            super(itemView);
+
+            tvItemTitulo =
+                    itemView.findViewById(
+                            R.id.tvItemTitulo
+                    );
+        }
     }
 }

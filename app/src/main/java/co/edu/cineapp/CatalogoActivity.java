@@ -10,9 +10,7 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.SearchView;
 import android.widget.TextView;
-import co.edu.cineapp.data.remote.ApiCallback;
 import android.widget.Toast;
-import co.edu.cineapp.data.entities.Pelicula;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,7 +37,6 @@ import co.edu.cineapp.data.model.PeliculaRepository;
 
 //PeliculaAdapter. Listener es el activity se que tiene los metodos
 public class CatalogoActivity extends AppCompatActivity {
-    private PeliculaRepository peliculaRepository;
     private RecyclerView rvPeliculas; //Cuadricula de peliculas
     private ChipGroup chipGroup; //Chips de género
     private Chip chip;
@@ -65,7 +62,6 @@ public class CatalogoActivity extends AppCompatActivity {
         });
         initObjects();
         configurarLista();
-        cargarPeliculas();
         chipGroup.setOnCheckedStateChangeListener(this::seleccionarGenero);
         btnVerMas.setOnClickListener(this::abrirDestacada);
         btnNav.setOnItemSelectedListener(this::seleccionarMenu);
@@ -77,24 +73,7 @@ public class CatalogoActivity extends AppCompatActivity {
         rvPeliculas.setAdapter(adaptador); //Conecta el adaptador
 
     }
-    private void cargarPeliculas() {
-        peliculaRepository.getPeliculas(new ApiCallback<List<Pelicula>>() {
-            @Override
-            public void onSuccess(List<Pelicula> data) {
-                todasLasPeliculas.clear();
-                if (data != null) {
-                    todasLasPeliculas.addAll(data);
-                }
-                aplicarFiltros(); // Actualiza el RecyclerView y chips
-            }
-            @Override
-            public void onError(String error) {
-                Toast.makeText(CatalogoActivity.this, error, Toast.LENGTH_LONG).show();
-                tvError.setVisibility(View.VISIBLE);
-                tvError.setText(error);
-            }
-        });
-    }
+
 
     private void seleccionarGenero(ChipGroup grupo, List<Integer> idSelececciondados) { //Se llama cuando cambia el chip seleccionado
         if (idSelececciondados.isEmpty()){ //Por seguridad: si no hay ningun chip seleccionado
@@ -121,7 +100,7 @@ public class CatalogoActivity extends AppCompatActivity {
         boolean todas = generoActual.equalsIgnoreCase("Todas");//revisa si "Todas" esta sleeccionado
 
         for (Pelicula pelicula : todasLasPeliculas) { //Revisa cada pelicula
-            boolean coincideGenero = todas || pelicula.getGenero().getNombre().equalsIgnoreCase(generoActual);//revisa si el genro si coincide
+            boolean coincideGenero = todas || pelicula.getGenero().equalsIgnoreCase(generoActual);//revisa si el genro si coincide
             boolean coincideTitulo = pelicula.getTitulo().toLowerCase().contains(textoBusqueda); // revisa si el titulo tiene lo que se esta buscando
             if (coincideGenero && coincideTitulo) {
                 filtradas.add(pelicula); //agrega la pelicula
@@ -134,10 +113,11 @@ public class CatalogoActivity extends AppCompatActivity {
     private void abrirInformacion(Pelicula pelicula){ //Abre la informacion (lo usa el adaptador y el boton)
         Intent intent = new Intent(this, PeliculaActivity.class) ; //Crea el intent Conexion a la pantalla
         intent.putExtra("titulo", pelicula.getTitulo()); //Envia el titulo
+        intent.putExtra("director", pelicula.getDirector());
         intent.putExtra("sinopsis", pelicula.getSinopsis());
         intent.putExtra("anio", pelicula.getAnio());
-        intent.putExtra("genero", pelicula.getGenero().getNombre());
-        intent.putExtra("duracion", pelicula.getDuracionMinutos());
+        intent.putExtra("genero", pelicula.getGenero());
+        intent.putExtra("duracion", pelicula.getDuracion());
         startActivity(intent);//abre la pantalla
     }
 
@@ -163,7 +143,5 @@ public class CatalogoActivity extends AppCompatActivity {
         tvError = findViewById(R.id.tvError);
         btnVerMas = findViewById(R.id.btnVerMas);
         btnNav = findViewById(R.id.btnNav);
-
-        peliculaRepository = new PeliculaRepository();
     }
 }
