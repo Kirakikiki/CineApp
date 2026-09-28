@@ -110,73 +110,16 @@ public class CatalogoActivity extends AppCompatActivity {
         tvError.setVisibility(filtradas.isEmpty() ? View.VISIBLE : View.GONE); //Muestra el error solo si no hay nada
     }
 
-    private void abrirInformacion(Pelicula pelicula) {
-
-        Intent intent = new Intent(
-                CatalogoActivity.this,
-                PeliculaActivity.class
-        );
-
-        // ID de la película
-        if (pelicula.getId() != null) {
-            intent.putExtra(
-                    "id",
-                    pelicula.getId()
-            );
-        }
-
-        // Título
-        intent.putExtra(
-                "titulo",
-                pelicula.getTitulo()
-        );
-
-        // Sinopsis
-        intent.putExtra(
-                "sinopsis",
-                pelicula.getSinopsis()
-        );
-
-        // Año
-        intent.putExtra(
-                "anio",
-                pelicula.getAnio()
-        );
-
-        // Género
-        intent.putExtra(
-                "genero",
-                pelicula.getNombreGenero()
-        );
-
-        // Duración
-        intent.putExtra(
-                "duracion",
-                pelicula.getDuracionTexto()
-        );
-
-        // Clasificación
-        intent.putExtra(
-                "clasificacion",
-                pelicula.getClasificacion()
-        );
-
-        // Poster
-        intent.putExtra(
-                "posterUrl",
-                pelicula.getPosterUrl()
-        );
-
-        // Trailer
-        intent.putExtra(
-                "trailerUrl",
-                pelicula.getTrailerUrl()
-        );
-
-        startActivity(intent);
+    private void abrirInformacion(Pelicula pelicula){ //Abre la informacion (lo usa el adaptador y el boton)
+        Intent intent = new Intent(this, PeliculaActivity.class) ; //Crea el intent Conexion a la pantalla
+        intent.putExtra("titulo", pelicula.getTitulo()); //Envia el titulo
+        intent.putExtra("director", pelicula.getDirector());
+        intent.putExtra("sinopsis", pelicula.getSinopsis());
+        intent.putExtra("anio", pelicula.getAnio());
+        intent.putExtra("genero", pelicula.getGenero());
+        intent.putExtra("duracion", pelicula.getDuracion());
+        startActivity(intent);//abre la pantalla
     }
-
-
 
     private  boolean seleccionarMenu(MenuItem item){ //decide a cual pantalla abrir segun el item seleccionado
         int id = item.getItemId(); //obtiene el id del item

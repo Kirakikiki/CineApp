@@ -390,8 +390,6 @@
         android:layout_width="0dp"
         android:layout_height="68dp"
         android:background="#170837"
-        app:itemIconTint="@color/nav_color"
-        app:itemTextColor="@color/nav_color"
         app:labelVisibilityMode="labeled"
         app:menu="@menu/bottom_nav_menu"
         app:layout_constraintBottom_toBottomOf="parent"

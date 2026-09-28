@@ -1,39 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="4dp"
-    android:background="@color/cine_marron"
+    android:background="#20094F"
     tools:context=".CatalogoActivity">
 
-<!--layout_height="0dp" en ConstraintLayout significa que ocupa lo que las restricciones permitan,
-empieza arriba del elemento padre y termina encima del menu inferior-->
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:fillViewport="true"
-        android:layout_marginTop="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/btnNav"
-        app:layout_constraintTop_toTopOf="parent">
+        android:clipToPadding="false"
+        android:paddingBottom="12dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btnNav">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:orientation="vertical">
-            <!-- Encabezado con saludo, titulo a la izquierda y avatar a la derecha-->
+            android:orientation="vertical"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingTop="18dp"
+            android:paddingBottom="20dp">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="10dp">
-                <!--Columna de texto-->
-                <!--layout_width="0dp" y layout_weight="1" hace que se ocupetodo el espacio que deje el avatar-->
+                android:gravity="center_vertical">
+
+                <!-- TEXTO DEL ENCABEZADO -->
+
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -45,7 +48,9 @@ empieza arriba del elemento padre y termina encima del menu inferior-->
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/tvSaludo"
-                        android:textSize="14sp" />
+                        android:textColor="#C8B6FF"
+                        android:textSize="15sp"
+                        android:layout_marginBottom="3dp"/>
 
                     <TextView
                         android:id="@+id/tvTitle"
@@ -53,247 +58,426 @@ empieza arriba del elemento padre y termina encima del menu inferior-->
                         android:layout_height="wrap_content"
                         android:text="@string/tvTitle"
                         android:textColor="#FFFFFF"
-                        android:textSize="26sp"
-                        android:textStyle="bold" />
+                        android:textSize="30sp"
+                        android:textStyle="bold"
+                        android:maxLines="2"/>
 
                 </LinearLayout>
 
+
+                <!-- ================================================= -->
+                <!-- AVATAR -->
+                <!-- ================================================= -->
+
                 <TextView
                     android:id="@+id/tvAvatar"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="#FFA266"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
                     android:gravity="center"
                     android:text="@string/tvAvatar"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textColor="#19053F"
+                    android:textSize="21sp"
+                    android:textStyle="bold"
+                    android:background="#FF5FA2"
+                    android:elevation="4dp"/>
 
             </LinearLayout>
-        <!-- Buscador-->
-            <SearchView
+
+            <androidx.appcompat.widget.SearchView
                 android:id="@+id/svSearch"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="58dp"
+                android:layout_marginTop="22dp"
+                android:background="#ffff"
                 android:iconifiedByDefault="false"
-                android:queryHint="Bucar película"/>
+                android:queryHint="Buscar película"
+                android:textColorHint="#C8B6FF"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"/>
 
             <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
                 android:scrollbars="none">
 
-                <!--ChiGroup -->
-                <!-- singleSelection = solo un chip activo a la vez
-                     selectionRequired = siempre debe haber uno seleccionado
-                     cada chip tiene checkable = "true" para poder marcarlo-->
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/chipGroup"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingBottom="3dp"
+                    app:chipSpacingHorizontal="10dp"
                     app:selectionRequired="true"
                     app:singleSelection="true">
+
+
+                    <!-- TODAS -->
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/cpTodas"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="48dp"
                         android:checkable="true"
                         android:checked="true"
-                        android:text="@string/cpTodas" />
+                        android:text="@string/cpTodas"
+                        android:textColor="#19053F"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        app:chipBackgroundColor="#FFD43B"
+                        app:chipCornerRadius="25dp"
+                        app:chipStrokeWidth="0dp"/>
+
+
+                    <!-- CIENCIA FICCIÓN -->
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/cpCienciaFiccion"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="48dp"
                         android:checkable="true"
-                        android:text="@string/cpCienciaFiccion" />
+                        android:text="@string/cpCienciaFiccion"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp"
+                        app:chipBackgroundColor="#321276"
+                        app:chipCornerRadius="25dp"
+                        app:chipStrokeWidth="0dp"/>
+
+
+                    <!-- SUSPENSO -->
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/cpSuspenso"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="48dp"
                         android:checkable="true"
-                        android:text="@string/cpSuspenso" />
+                        android:text="@string/cpSuspenso"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp"
+                        app:chipBackgroundColor="#321276"
+                        app:chipCornerRadius="25dp"
+                        app:chipStrokeWidth="0dp"/>
+
+
+                    <!-- DRAMA -->
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/cpDrama"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="48dp"
                         android:checkable="true"
-                        android:text="@string/cpDrama" />
+                        android:text="@string/cpDrama"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp"
+                        app:chipBackgroundColor="#321276"
+                        app:chipCornerRadius="25dp"
+                        app:chipStrokeWidth="0dp"/>
+
+
+                    <!-- ACCIÓN -->
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/cpAccion"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="48dp"
                         android:checkable="true"
-                        android:text="@string/cpAccion" />
+                        android:text="@string/cpAccion"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp"
+                        app:chipBackgroundColor="#321276"
+                        app:chipCornerRadius="25dp"
+                        app:chipStrokeWidth="0dp"/>
+
+
+                    <!-- AVENTURA -->
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/cpAventura"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="48dp"
                         android:checkable="true"
-                        android:text="@string/cpAventura" />
+                        android:text="@string/cpAventura"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp"
+                        app:chipBackgroundColor="#321276"
+                        app:chipCornerRadius="25dp"
+                        app:chipStrokeWidth="0dp"/>
+
+
+                    <!-- COMEDIA -->
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/cpComedia"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="48dp"
                         android:checkable="true"
-                        android:text="@string/cpComedia" />
+                        android:text="@string/cpComedia"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp"
+                        app:chipBackgroundColor="#321276"
+                        app:chipCornerRadius="25dp"
+                        app:chipStrokeWidth="0dp"/>
+
+
+                    <!-- FANTASÍA -->
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/cpFantasia"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="48dp"
                         android:checkable="true"
-                        android:text="@string/cpFantasia" />
+                        android:text="@string/cpFantasia"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp"
+                        app:chipBackgroundColor="#321276"
+                        app:chipCornerRadius="25dp"
+                        app:chipStrokeWidth="0dp"/>
+
+
+                    <!-- ROMANCE -->
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/cpRomance"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="48dp"
                         android:checkable="true"
-                        android:text="@string/cpRomance" />
+                        android:text="@string/cpRomance"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp"
+                        app:chipBackgroundColor="#321276"
+                        app:chipCornerRadius="25dp"
+                        app:chipStrokeWidth="0dp"/>
+
+
+                    <!-- TERROR -->
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/cpTerror"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="48dp"
                         android:checkable="true"
-                        android:text="@string/cpTerror" />
+                        android:text="@string/cpTerror"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp"
+                        app:chipBackgroundColor="#321276"
+                        app:chipCornerRadius="25dp"
+                        app:chipStrokeWidth="0dp"/>
+
+
+                    <!-- MUSICAL -->
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/cpMusical"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="48dp"
                         android:checkable="true"
-                        android:text="@string/cpMusical" />
+                        android:text="@string/cpMusical"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp"
+                        app:chipBackgroundColor="#321276"
+                        app:chipCornerRadius="25dp"
+                        app:chipStrokeWidth="0dp"/>
+
                 </com.google.android.material.chip.ChipGroup>
+
             </HorizontalScrollView>
+
+
+            <!-- ================================================= -->
+            <!-- DESTACADA DE LA SEMANA -->
+            <!-- ================================================= -->
 
             <TextView
                 android:id="@+id/tvSubtitle1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="12dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="15dp"
                 android:text="@string/tvSubtitle1"
                 android:textColor="#FFFFFF"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textSize="25sp"
+                android:textStyle="bold"/>
 
-            <!--Tarjeta destacada-->
+
+            <!-- TARJETA DESTACADA -->
+
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                app:cardCornerRadius="20dp">
+                android:layout_height="210dp"
+                android:layout_marginBottom="8dp"
+                app:cardBackgroundColor="#FFF5E8"
+                app:cardCornerRadius="25dp"
+                app:cardElevation="2dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="204dp">
+                    android:layout_height="match_parent">
+
+
+                    <!-- POSTER -->
 
                     <ImageView
                         android:id="@+id/imgDestacada"
-                        android:layout_width="156dp"
-                        android:layout_height="187dp"
-                        android:layout_marginBottom="8dp"
+                        android:layout_width="135dp"
+                        android:layout_height="170dp"
+                        android:layout_marginStart="18dp"
+                        android:scaleType="centerCrop"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.062"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:srcCompat="@drawable/images__1_" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/images__1_"/>
+
+
+                    <!-- LÍNEA VERTICAL -->
+
+                    <View
+                        android:layout_width="3dp"
+                        android:layout_height="170dp"
+                        android:layout_marginStart="14dp"
+                        android:background="#FF4F9A"
+                        android:alpha="0.45"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/imgDestacada"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
+
+                    <!-- TÍTULO -->
 
                     <TextView
                         android:id="@+id/tvTitleFamous"
-                        android:layout_width="96dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="168dp"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginEnd="12dp"
                         android:text="@string/tvTitleFamous"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:textColor="#19053F"
+                        android:textSize="21sp"
+                        android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.05"
-                        app:layout_constraintStart_toEndOf="@+id/imgDestacada" />
+                        app:layout_constraintStart_toEndOf="@id/imgDestacada"
+                        app:layout_constraintTop_toTopOf="@id/imgDestacada"/>
+
+
+                    <!-- INFORMACIÓN -->
 
                     <TextView
                         android:id="@+id/tvInfoFamous"
-                        android:layout_width="177dp"
-                        android:layout_height="22dp"
-                        android:layout_marginTop="16dp"
-                        android:text="@string/tvInfoFamous"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.243"
-                        app:layout_constraintStart_toEndOf="@+id/imgDestacada"
-                        app:layout_constraintTop_toBottomOf="@+id/tvTitleFamous" />
-
-                    <Button
-                        android:id="@+id/btnVerMas"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:text="@string/btnVerMas"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="10dp"
+                        android:text="@string/tvInfoFamous"
+                        android:textColor="#756A91"
+                        android:textSize="15sp"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.503"
-                        app:layout_constraintStart_toEndOf="@+id/imgDestacada"
-                        app:layout_constraintTop_toBottomOf="@+id/rbFamous" />
+                        app:layout_constraintStart_toEndOf="@id/imgDestacada"
+                        app:layout_constraintTop_toBottomOf="@id/tvTitleFamous"/>
+
+
+                    <!-- ESTRELLAS -->
 
                     <RatingBar
                         android:id="@+id/rbFamous"
                         style="?android:attr/ratingBarStyleSmall"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="80dp"
+                        android:layout_marginStart="22dp"
+                        android:layout_marginTop="8dp"
                         android:isIndicator="true"
                         android:numStars="5"
                         android:rating="5"
+                        android:scaleX="0.85"
+                        android:scaleY="0.85"
+                        app:layout_constraintStart_toEndOf="@id/imgDestacada"
+                        app:layout_constraintTop_toBottomOf="@id/tvInfoFamous"/>
+
+
+                    <!-- BOTÓN -->
+
+                    <Button
+                        android:id="@+id/btnVerMas"
+                        android:layout_width="155dp"
+                        android:layout_height="52dp"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginBottom="17dp"
+                        android:backgroundTint="#FF4F9A"
+                        android:text="@string/btnVerMas"
+                        android:textAllCaps="false"
+                        android:textColor="#19053F"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/imgDestacada" />
+                        app:layout_constraintStart_toEndOf="@id/imgDestacada"/>
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
             </androidx.cardview.widget.CardView>
+
+
+            <!-- ================================================= -->
+            <!-- TODO EL CATÁLOGO -->
+            <!-- ================================================= -->
 
             <TextView
                 android:id="@+id/tvSubtitle2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
-                android:layout_marginBottom="12dp"
+                android:layout_marginTop="28dp"
+                android:layout_marginBottom="15dp"
                 android:text="@string/tvSubtitle2"
                 android:textColor="#FFFFFF"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textSize="25sp"
+                android:textStyle="bold"/>
 
-            <!-- Cuadricula de peliculas -->
-            <!-- nestedScrollingEnabled false, sin escroll propio; manda el scrollview exteerno-->
+
+            <!-- ================================================= -->
+            <!-- GRID DE PELÍCULAS -->
+            <!-- ================================================= -->
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvPeliculas"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"/>
+                android:nestedScrollingEnabled="false"
+                android:clipToPadding="false"
+                android:paddingBottom="10dp"/>
 
-                <TextView
-                    android:id="@+id/tvError"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:padding="24dp"
-                    android:text="No se encontraron películas"
-                    android:textColor="#FFFFFF"
-                    android:visibility="gone"/>
+
+            <!-- MENSAJE DE ERROR -->
+
+            <TextView
+                android:id="@+id/tvError"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="24dp"
+                android:text="No se encontraron películas"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:visibility="gone"/>
+
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
 
-    <!--Barra de navegación-->
+
+    <!-- ================================================= -->
+    <!-- BARRA DE NAVEGACIÓN INFERIOR -->
+    <!-- ================================================= -->
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/btnNav"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="78dp"
+        android:background="#16052F"
+        app:itemIconTint="#D6C8F7"
+        app:itemTextColor="#D6C8F7"
+        app:itemRippleColor="#00000000"
+        app:labelVisibilityMode="labeled"
+        app:itemHorizontalTranslationEnabled="false"
+        app:menu="@menu/bottom_nav_menu"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_nav_menu" />
+        app:layout_constraintEnd_toEndOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

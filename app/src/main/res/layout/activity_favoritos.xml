@@ -299,8 +299,6 @@
         android:layout_width="0dp"
         android:layout_height="78dp"
         android:background="#17082F"
-        app:itemIconTint="@color/nav_color"
-        app:itemTextColor="@color/nav_color"
         app:labelVisibilityMode="labeled"
         app:menu="@menu/bottom_nav_menu"
         app:layout_constraintBottom_toBottomOf="parent"
