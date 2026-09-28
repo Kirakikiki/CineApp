@@ -94,6 +94,7 @@ public class CatalogoActivity extends AppCompatActivity {
 
         // Cargar películas desde la API
         cargarPeliculas();
+        btnNav.setOnItemSelectedListener(this::seleccionarMenu);
     }
 
 
@@ -408,39 +409,19 @@ public class CatalogoActivity extends AppCompatActivity {
     // =========================================================
 
     private void abrirInformacion(Pelicula pelicula) {
-
         if (pelicula == null) {
             return;
         }
-
-        /*
-         * Por ahora mostramos la información básica.
-         *
-         * Después podemos conectar este método con la pantalla
-         * de detalle de la película.
-         */
-
-        String titulo =
-                pelicula.getTitulo();
-
-        String genero =
-                pelicula.getNombreGenero();
-
-        String duracion =
-                pelicula.getDuracionTexto();
-
-        String mensaje =
-                titulo
-                        + "\n"
-                        + genero
-                        + "\n"
-                        + duracion;
-
-        Toast.makeText(
-                this,
-                mensaje,
-                Toast.LENGTH_SHORT
-        ).show();
+        // Creamos la conexión (Intent) hacia PeliculaActivity
+        Intent intent = new Intent(CatalogoActivity.this, PeliculaActivity.class);
+        // Enviamos los datos de la película seleccionada
+        intent.putExtra("titulo", pelicula.getTitulo());
+        intent.putExtra("genero", pelicula.getNombreGenero());
+        intent.putExtra("duracion", pelicula.getDuracionTexto());
+        intent.putExtra("anio", pelicula.getAnio());
+        intent.putExtra("sinopsis", pelicula.getSinopsis());
+        // Abre la pantalla
+        startActivity(intent);
     }
 
     private  boolean seleccionarMenu(MenuItem item){ //decide a cual pantalla abrir segun el item seleccionado
