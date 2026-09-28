@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
 import java.util.ArrayList;
@@ -33,36 +34,20 @@ import co.edu.cineapp.data.entities.Pelicula;
 import co.edu.cineapp.data.model.PeliculaRepository;
 
 //PeliculaAdapter. Listener es el activity se que tiene los metodos
-public class CatalogoActivity extends AppCompatActivity implements PeliculaAdapter.Listener{
-    //"todas"= lista completa de peliculas sin filtar
-    private final List<Pelicula> todas = new ArrayList<>();
-    // id de las peloiculas favoritas del usuario
-    private Set<Integer> favoritasId = new HashSet<>();
-    // Filtro seleccionado actualmente (todas osea sin filtrar)
-    private String generoSeleccionado =  "Todas";
+public class CatalogoActivity extends AppCompatActivity {
+    private RecyclerView rvPeliculas; //Cuadricula de peliculas
+    private ChipGroup chipGroup; //Chips de género
+    private Chip chip;
+    private SearchView svSearch; //Buscador
+    private TextView tvError; //Mensaje "sin resultados"
+    private Button btnVerMas; //Boton de la tarjeta destacada
+    private BottomNavigationView btnNav; //Menu de navegacion inferior
 
-    //Texto escrito en el buscador (en minúsculas para comparar sin importar las mayusculas)
-    private String query = "";
+    private final List<Pelicula> todasLasPeliculas = new ArrayList<>(); //Lista completa de pelicuals sin filtrar
+    private PeliculaAdapter adaptador; //Adsptador del recyclerview
 
-   //Pelicula mostrada en Destacada de la semana, se guarda para poder usarla en el botno de ver mas
-    private Pelicula destacada;
-
-    // elementos
-    private SearchView buscar;
-    private ChipGroup chipGroup;
-    private ImageView imgDestacada;
-    private TextView tituloDestacado;
-    private TextView infoDestacado;
-    private TextView mensaje;
-    private RatingBar rbDestacada;
-    private Button verMas;
-    private RecyclerView rvPeliculas;
-    private BottomNavigationView bottomNavigationView;
-
-    private PeliculaAdapter adapter; //adpatador de la cuadrícula
-    private PeliculaRepository peliculaRepository;//acceso a datos de peliculas
-    private FavoritoRepository favoritoRepository; //acceso a datos de favoritos
-
+    private String generoActual = "Todas"; // Genero seleccionado en los chips
+    private String textoBusqueda = ""; //Texto escrito en el buscador
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,120 +58,54 @@ public class CatalogoActivity extends AppCompatActivity implements PeliculaAdapt
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        // Chips de genero: recorre el chipGroup y todos usan el mismo metod onClick
-        for (int i = 0; i < chipGroup.getChildCount(); i++){
-            chipGroup.getChildAt(i).setOnClickListener(this::);
+        initObjects();
+        configurarLista();
+        chipGroup.setOnClickListener(this::seleccionarGenero);
+    }
+
+    private void configurarLista(){ //Prepara el ReclyclerView
+        adaptador = new PeliculaAdapter(new ArrayList<>(todasLasPeliculas), this::abririnformacion); //Crear el adaptador; al tocar una tarjeta llama a abrirInformacion
+        rvPeliculas.setLayoutManager(new GridLayoutManager(this, 2)); //Cuadrícula de 2 columnas
+        rvPeliculas.setAdapter(adaptador); //Conecta el adaptador
+
+    }
+
+    private void seleccionarGenero(ChipGroup grupo, List<Integer> idSelececciondados) { //Se llama cuando cambia el chip seleccionado
+        if (idSelececciondados.isEmpty()){ //Por seguridad: si no hay ningun chip seleccionado
+            return;
         }
+        int idChip = idSelececciondados.get(0); //toma el id del chip seleccionado
+        Chip chip = grupo.findViewById(idChip); //Busca el chip dentro del grupo
+        generoActual = chip.getText().toString(); // Guarda el genero
+        aplicarFiltros(); //Actualiza la lista con el nuevo genero
     }
 
-    // Chips de genero: recorre el chipGroup y todos usan el mismo metod onClick
-
-    /**
-     * onResume: se ejecuta cada vez que la pantalla vuelve a ser visible*/
-    @Override
-    protected void onResume(){
-        super.onResume();;
-        cargarDatos();
+    private void buscar(String texto) {//Guarda el texto buscado
+        textoBusqueda = texto.trim().toLowerCase(); //Sin espacios y en minusculas
+        aplicarFiltros(); //Actualiza la lista
     }
+    private void aplicarFiltros(){ //Combina genero y busqueda
+        List<Pelicula> filtradas = new ArrayList<>(); //Lista vacia para resultados
+        boolean todas = generoActual.equalsIgnoreCase("Todas");//revisa si "Todas" esta sleeccionado
 
-    //metodo de reposirorios
-    private void initRepositorios(){
-        peliculaRepository = new PeliculaRepository();
-        favoritoRepository = new FavoritoRepository();
-    }
-    //Configura el reciclerview, distribucion de la cuadricula y el adapter
-    private void setupRecycler(){
-        //GridLayoutManager = cuadricula de 2 columnas
-        rvPeliculas.setLayoutManager(new GridLayoutManager(this, 2));
-        //this es el listener porque se esta implementando PeliculaAdapter.Listener
-        adapter = new PeliculaAdapter(this);
-        rvPeliculas.setAdapter(adapter); // coneccion del adapter al recyclerview
-
-    }
-
-    //Carga de datos
-    //1. Pedir los favoritos
-    private void cargarDatos(){
-        favoritoRepository.getFavoritasId (new AsyncListUtil.DataCallback<Set<Integer>>() {
-            @Override
-            public void onSuccess(Set<Integer>id){
-                onFavoritosCargados(id);
+        for (Pelicula pelicula : todasLasPeliculas) { //Revisa cada pelicula
+            boolean coincideGenero = todas || pelicula.getGenero().equalsIgnoreCase(generoActual);//revisa si el genro si coincide
+            boolean coincideTitulo = pelicula.getTitulo().toLowerCase().contains(textoBusqueda); // revisa si el titulo tiene lo que se esta buscando
+            if (coincideGenero && coincideTitulo) {
+                filtradas.add(pelicula); //agrega la pelicula
             }
-            @Override
-            public void onError(String message) {
-                mostrarError(message);
-            }
-        });
-    }
-    //2. guargar los favoritos y pedir peliculas
-    private void onFavoritosCargados(Set<Integer>id) {
-        favoritasId = new HashSet<>(id); //Copia del conjunto
-        peliculaRepository.getPeliculas(new DataCallback<List<Pelicula>>(){
-            @Override
-            public void onSuccess(List<Pelicula> data){
-                onPeliculasCargadas(data);
-            }
-            @Override
-            public void onError(String message) {
-                mostrarError(message);
-            }
-        });
-    }
-    //3. resive las peliculas y actualiza la pantalla
-    private void onPeliculasCargadas(List<Pelicula>data){
-        todas.clear(); //se limpia por si hay errores
-        todas.addAll(data);//se guarda la lista completa
-        mostrarDestacada(); //se llena la tarjeta destacada de la semana
-        aplicarFiltros(); //pintamos la cuandricula
-    }
-
-    //Muestra un mensaje de error
-    private void mostrarError(String mensaje) {
-        Toast.makeText(this, "mensaje", Toast.LENGTH_SHORT).show();
-    }
-
-    //UI: Filtros y destacada
-    /**
-     * empieza de la lista completa y
-     * se queda solo con las peliculas que cumplan
-     * el genero y el texto de busqueda a la vez*/
-    private void aplicarFiltros() {
-        List<Pelicula> resultados = new ArrayList<>(); // lista de resultados
-        for (Pelicula pelicula : todas) {
-            //Conincide el genero?
-            //equalsIgnoreCase compara sin importar si es Mayuscula o minuscula
-            boolean okGenero = generoSeleccionado.isEmpty() || pelicula.getGenero().equalsIgnoreCase(generoSeleccionado);
-            //coincide el texto?
-            boolean okTexto = query.isEmpty() || pelicula.getTitulo().toLowerCase().contains(query);
-            if (okGenero && okTexto) resultados.add(pelicula);
         }
-        adapter.submit(resultados, favoritasId); // se muestra el resultado
-        // si no hay resultados se muestra el mensaje
-        mensaje.setVisibility(resultados.isEmpty() ? View.VISIBLE : View.GONE);
+        adaptador.actualizarLista(filtradas);//Muestra los resultados
+        tvError.setVisibility(filtradas.isEmpty() ? View.VISIBLE : View.GONE); //Muestra el error solo si no hay nada
     }
 
-    //Llenar la tarjeta desttacada de la semana
-    private void mostrarDestacada() {
-        if (todas.isEmpty()) return;; // sin peliculas no hay nada que destacar
-        // la pelicula con mayor calificacion se pone de primeras
-        destacada = todas.get(0);
-        // si se encuentra una mejor claificada, se remplaza
-        for (Pelicula pelicula : todas) {
-            if (pelicula.getClasificacion() > destacada.getClasificacion()) destacada =pelicula;
-        }
-        // Carga del poster con Glide
-        Glide.with
-    }
     private void initObjects(){
-        buscar = findViewById(R.id.svSearch);
-        chipGroup = findViewById(R.id.chipGroup);
-        imgDestacada = findViewById(R.id.imgDestacada);
-        tituloDestacado = findViewById(R.id.tvTitleFamous);
-        infoDestacado = findViewById(R.id.tvInfoFamous);
-        rbDestacada = findViewById(R.id.rbFamous);
-        verMas = findViewById(R.id.btnVerMas);
         rvPeliculas = findViewById(R.id.rvPeliculas);
-        mensaje = findViewById(R.id.tvError);
-        bottomNavigationView = findViewById(R.id.btnNav);
+        chipGroup = findViewById(R.id.chipGroup);
+
+        svSearch = findViewById(R.id.svSearch);
+        tvError = findViewById(R.id.tvError);
+        btnVerMas = findViewById(R.id.btnVerMas);
+        btnNav = findViewById(R.id.btnNav);
     }
 }
