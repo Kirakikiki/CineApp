@@ -1,4 +1,4 @@
-package co.edu.cineapp.entities;
+package co.edu.cineapp.data.entities;
 
 public class User {
     // Declaración de atributos

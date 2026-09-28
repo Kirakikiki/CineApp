@@ -1,4 +1,4 @@
-package co.edu.cineapp.local;
+package co.edu.cineapp.data.local;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;

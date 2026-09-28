@@ -7,7 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
-import co.edu.cineapp.local.MiPeliculaEntity;
+import co.edu.cineapp.data.local.MiPeliculaEntity;
 
 public class ArchivoUtil {
     public static File exportarDatos(Context context, List<MiPeliculaEntity> lista) throws IOException{

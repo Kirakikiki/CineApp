@@ -1,3 +1,6 @@
+import org.gradle.accessors.dm.LibrariesForLibs
+
+
 plugins {
     alias(libs.plugins.android.application)
     id("com.google.gms.google-services")
@@ -41,6 +44,7 @@ dependencies {
     implementation(libs.gridlayout)
     implementation(libs.legacy.support.v4)
     implementation(libs.material)
+    implementation(libs.retrofit)
 
     implementation(platform("com.google.firebase:firebase-bom:34.18.0"))
     implementation("com.google.firebase:firebase-auth")

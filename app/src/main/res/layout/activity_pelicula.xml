@@ -76,17 +76,23 @@
             <TextView
                 android:id="@+id/cpYear"
                 style=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="2024"/>
 
             <TextView
                 android:id="@+id/cpGenre"
                 style=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="Suspenso"/>
 
             <TextView
                 android:id="@+id/cpDuration"
                 style=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="112 min"/>
         </LinearLayout>

@@ -84,7 +84,7 @@
         android:progressBackgroundTint="@android:color/transparent"/>
 
     <EditText
-        android:id="@+id/etReseña"
+        android:id="@+id/etResena"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -95,8 +95,7 @@
         android:inputType="textMultiLine|textCapSentences"
         android:padding="16dp"
         android:textColor="@android:color/white"
-        android:textColorHint="@android:color/white"
-        android:text="Name" />
+        android:textColorHint="@android:color/white" />
 
     <LinearLayout
         android:layout_width="match_parent"

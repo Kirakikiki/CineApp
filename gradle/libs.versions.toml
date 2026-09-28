@@ -11,6 +11,7 @@ cardview = "1.0.0"
 legacySupportV4 = "1.0.0"
 recyclerview = "1.4.0"
 gridlayout = "1.1.0"
+retrofit = "3.0.0"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -24,7 +25,7 @@ cardview = { group = "androidx.cardview", name = "cardview", version.ref = "card
 legacy-support-v4 = { group = "androidx.legacy", name = "legacy-support-v4", version.ref = "legacySupportV4" }
 recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
 gridlayout = { group = "androidx.gridlayout", name = "gridlayout", version.ref = "gridlayout" }
-
+retrofit = { module = "com.squarerup.retrofit2:retrofit", version.ref = "retrofit"}
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 

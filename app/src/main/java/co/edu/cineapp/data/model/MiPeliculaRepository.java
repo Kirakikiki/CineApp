@@ -1,10 +1,15 @@
-package co.edu.cineapp.local;
+package co.edu.cineapp.data.model;
 
 import android.content.Context;
 
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
+
+import co.edu.cineapp.data.local.AppDatabase;
+import co.edu.cineapp.data.local.AppExecutors;
+import co.edu.cineapp.data.local.MiPeliculaDao;
+import co.edu.cineapp.data.local.MiPeliculaEntity;
 
 /**
  * Actua como intermediario entre la capa de presentacion (Activities/ViewModels)

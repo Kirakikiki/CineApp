@@ -24,4 +24,6 @@
     <string name="tvSubtitle2">Todo el catálogo</string>
     <string name="tvTitleMovie">Spiderman Brand New Day</string>
     <string name="tvInfoMovie">2026 · Ciencia Ficción</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

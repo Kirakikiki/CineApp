@@ -1,4 +1,4 @@
-package co.edu.cineapp.local;
+package co.edu.cineapp.data.local;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;

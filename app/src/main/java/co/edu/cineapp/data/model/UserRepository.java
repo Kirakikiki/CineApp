@@ -1,4 +1,4 @@
-package co.edu.cineapp.model;
+package co.edu.cineapp.data.model;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import co.edu.cineapp.entities.User;
+import co.edu.cineapp.data.entities.User;
 import co.edu.cineapp.manager.ManagerDataBase;
 import co.edu.cineapp.manager.UserContract;
 

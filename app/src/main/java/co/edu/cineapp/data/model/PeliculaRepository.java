@@ -1,4 +1,4 @@
-package co.edu.cineapp.model;
+package co.edu.cineapp.data.model;
 
 public class PeliculaRepository {
 }

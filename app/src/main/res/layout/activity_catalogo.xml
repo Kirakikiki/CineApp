@@ -9,29 +9,31 @@
     android:background="@color/cine_marron"
     tools:context=".CatalogoActivity">
 
-
+<!--layout_height="0dp" en ConstraintLayout significa que ocupa lo que las restricciones permitan,
+empieza arriba del elemento padre y termina encima del menu inferior-->
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:fillViewport="true"
         android:layout_marginTop="20dp"
-        tools:layout_editor_absoluteX="14dp"
-        tools:layout_editor_absoluteY="14dp">
+        app:layout_constraintBottom_toTopOf="@+id/btnNav"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:orientation="vertical">
-
+            <!-- Encabezado con saludo, titulo a la izquierda y avatar a la derecha-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:padding="10dp">
-
+                <!--Columna de texto-->
+                <!--layout_width="0dp" y layout_weight="1" hace que se ocupetodo el espacio que deje el avatar-->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -67,83 +69,106 @@
                     android:textStyle="bold" />
 
             </LinearLayout>
-
+        <!-- Buscador-->
             <SearchView
+                android:id="@+id/svSearch"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="wrap_content"
+                android:iconifiedByDefault="false"
+                android:queryHint="Bucar película"/>
 
             <HorizontalScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:scrollbars="none">
 
+                <!--ChiGroup -->
+                <!-- singleSelection = solo un chip activo a la vez
+                     selectionRequired = siempre debe haber uno seleccionado
+                     cada chip tiene checkable = "true" para poder marcarlo-->
                 <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chipGroup"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content"
+                    app:selectionRequired="true"
+                    app:singleSelection="true">
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/cpTodas"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:checked="true"
                         android:text="@string/cpTodas" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/cpCienciaFiccion"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:checkable="true"
                         android:text="@string/cpCienciaFiccion" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/cpSuspenso"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:checkable="true"
                         android:text="@string/cpSuspenso" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/cpDrama"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:checkable="true"
                         android:text="@string/cpDrama" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/cpAccion"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:checkable="true"
                         android:text="@string/cpAccion" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/cpAventura"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:checkable="true"
                         android:text="@string/cpAventura" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/cpComedia"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:checkable="true"
                         android:text="@string/cpComedia" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/cpFantasia"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:checkable="true"
                         android:text="@string/cpFantasia" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/cpRomance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:checkable="true"
                         android:text="@string/cpRomance" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/cpTerror"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:checkable="true"
                         android:text="@string/cpTerror" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/cpMusical"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:checkable="true"
                         android:text="@string/cpMusical" />
                 </com.google.android.material.chip.ChipGroup>
             </HorizontalScrollView>
@@ -159,6 +184,7 @@
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
+            <!--Tarjeta destacada-->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -170,10 +196,9 @@
                     android:layout_height="204dp">
 
                     <ImageView
-                        android:id="@+id/imageView"
+                        android:id="@+id/imgDestacada"
                         android:layout_width="156dp"
                         android:layout_height="187dp"
-
                         android:layout_marginBottom="8dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -190,7 +215,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.05"
-                        app:layout_constraintStart_toEndOf="@+id/imageView" />
+                        app:layout_constraintStart_toEndOf="@+id/imgDestacada" />
 
                     <TextView
                         android:id="@+id/tvInfoFamous"
@@ -200,7 +225,7 @@
                         android:text="@string/tvInfoFamous"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.243"
-                        app:layout_constraintStart_toEndOf="@+id/imageView"
+                        app:layout_constraintStart_toEndOf="@+id/imgDestacada"
                         app:layout_constraintTop_toBottomOf="@+id/tvTitleFamous" />
 
                     <Button
@@ -211,11 +236,11 @@
                         android:text="@string/btnVerMas"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.503"
-                        app:layout_constraintStart_toEndOf="@+id/imageView"
-                        app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
+                        app:layout_constraintStart_toEndOf="@+id/imgDestacada"
+                        app:layout_constraintTop_toBottomOf="@+id/rbFamous" />
 
                     <RatingBar
-                        android:id="@+id/ratingBar"
+                        android:id="@+id/rbFamous"
                         style="?android:attr/ratingBarStyleSmall"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -225,7 +250,7 @@
                         android:rating="5"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/imageView" />
+                        app:layout_constraintStart_toEndOf="@+id/imgDestacada" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
@@ -240,248 +265,32 @@
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <androidx.gridlayout.widget.GridLayout
+            <!-- Cuadricula de peliculas -->
+            <!-- nestedScrollingEnabled false, sin escroll propio; manda el scrollview exteerno-->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvPeliculas"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"/>
 
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="0dp"
+                <TextView
+                    android:id="@+id/tvError"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    app:cardBackgroundColor="#2A1450"
-                    app:cardCornerRadius="16dp"
-                    app:layout_columnWeight="1">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <FrameLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="180dp">
-
-                            <ImageView
-                                android:id="@+id/imageView2"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:scaleType="centerCrop"
-                                app:srcCompat="@drawable/images__1_" />
-
-                            <ImageButton
-                                android:id="@+id/btnFav"
-                                android:layout_width="48dp"
-                                android:layout_height="48dp"
-                                android:layout_gravity="top|end"
-                                android:layout_margin="8dp"
-                                android:contentDescription="Favorite"
-                                app:srcCompat="@drawable/outline_favorite_24" />
-
-                        </FrameLayout>
-
-                        <TextView
-                            android:id="@+id/tvTitleMovie"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="8dp"
-                            android:text="@string/tvTitleMovie"
-                            android:textColor="#FFFFFF"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/tvInfoMovi"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingStart="8dp"
-                            android:paddingBottom="8dp"
-                            android:text="@string/tvInfoMovie"
-                            android:textColor="#B9A8D9" />
-
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    app:cardBackgroundColor="#2A1450"
-                    app:cardCornerRadius="16dp"
-                    app:layout_columnWeight="1">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <FrameLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="180dp">
-
-                            <ImageView
-                                android:id="@+id/imageView2"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:scaleType="centerCrop"
-                                app:srcCompat="@drawable/images__1_" />
-
-                            <ImageButton
-                                android:id="@+id/btnFav"
-                                android:layout_width="48dp"
-                                android:layout_height="48dp"
-                                android:layout_gravity="top|end"
-                                android:layout_margin="8dp"
-                                android:contentDescription="Favorite"
-                                app:srcCompat="@drawable/outline_favorite_24" />
-
-                        </FrameLayout>
-
-                        <TextView
-                            android:id="@+id/tvTitleMovie"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="8dp"
-                            android:text="@string/tvTitleMovie"
-                            android:textColor="#FFFFFF"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/tvInfoMovi"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingStart="8dp"
-                            android:paddingBottom="8dp"
-                            android:text="@string/tvInfoMovie"
-                            android:textColor="#B9A8D9" />
-
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-            </androidx.gridlayout.widget.GridLayout>
-            <androidx.gridlayout.widget.GridLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    app:cardBackgroundColor="#2A1450"
-                    app:cardCornerRadius="16dp"
-                    app:layout_columnWeight="1">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <FrameLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="180dp">
-
-                            <ImageView
-                                android:id="@+id/imageView2"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:scaleType="centerCrop"
-                                app:srcCompat="@drawable/images__1_" />
-
-                            <ImageButton
-                                android:id="@+id/btnFav"
-                                android:layout_width="48dp"
-                                android:layout_height="48dp"
-                                android:layout_gravity="top|end"
-                                android:layout_margin="8dp"
-                                android:contentDescription="Favorite"
-                                app:srcCompat="@drawable/outline_favorite_24" />
-
-                        </FrameLayout>
-
-                        <TextView
-                            android:id="@+id/tvTitleMovie"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="8dp"
-                            android:text="@string/tvTitleMovie"
-                            android:textColor="#FFFFFF"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/tvInfoMovi"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingStart="8dp"
-                            android:paddingBottom="8dp"
-                            android:text="@string/tvInfoMovie"
-                            android:textColor="#B9A8D9" />
-
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    app:cardBackgroundColor="#2A1450"
-                    app:cardCornerRadius="16dp"
-                    app:layout_columnWeight="1">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <FrameLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="180dp">
-
-                            <ImageView
-                                android:id="@+id/imageView2"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:scaleType="centerCrop"
-                                app:srcCompat="@drawable/images__1_" />
-
-                            <ImageButton
-                                android:id="@+id/btnFav"
-                                android:layout_width="48dp"
-                                android:layout_height="48dp"
-                                android:layout_gravity="top|end"
-                                android:layout_margin="8dp"
-                                android:contentDescription="Favorite"
-                                app:srcCompat="@drawable/outline_favorite_24" />
-
-                        </FrameLayout>
-
-                        <TextView
-                            android:id="@+id/tvTitleMovie"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="8dp"
-                            android:text="@string/tvTitleMovie"
-                            android:textColor="#FFFFFF"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/tvInfoMovi"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingStart="8dp"
-                            android:paddingBottom="8dp"
-                            android:text="@string/tvInfoMovie"
-                            android:textColor="#B9A8D9" />
-
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-            </androidx.gridlayout.widget.GridLayout>
-
+                    android:gravity="center"
+                    android:padding="24dp"
+                    android:text="No se encontraron películas"
+                    android:textColor="#FFFFFF"
+                    android:visibility="gone"/>
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
 
+    <!--Barra de navegación-->
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/btnNav"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
