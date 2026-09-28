@@ -57,7 +57,7 @@ public class ResenaActivity extends AppCompatActivity {
                     Toast.makeText(this, "Se requiere permiso de cámara para tomar fotos", Toast.LENGTH_SHORT).show();
                 }
             });
-
+        //hola
         // Launcher para pedir permiso de ubicación
         private final ActivityResultLauncher<String> permisoUbicacionLauncher =
         registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
