@@ -16,13 +16,16 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.button.MaterialButton;
 
+import co.edu.cineapp.data.local.MiPeliculaEntity;
+import co.edu.cineapp.data.model.MiPeliculaRepository;
+import co.edu.cineapp.utils.SessionManager;
+
 public class PeliculaActivity extends AppCompatActivity {
 
     // =========================================================
     // VISTAS
     // =========================================================
 
-    private ImageButton btnBack;
     private ImageButton btnFavorite;
 
     private TextView tvTituloPeli;
@@ -68,6 +71,9 @@ public class PeliculaActivity extends AppCompatActivity {
 
     private boolean estaPendiente = false;
     private boolean estaVista = false;
+    private MiPeliculaRepository miPeliculaRepository;
+    private SessionManager sessionManager;
+    private MiPeliculaEntity peliculaGuardada;
 
 
     // =========================================================
@@ -84,8 +90,11 @@ public class PeliculaActivity extends AppCompatActivity {
 
         configurarVentana();
         iniciarComponentes();
+        miPeliculaRepository = new MiPeliculaRepository(this);
+        sessionManager = new SessionManager(this);
         recibirDatos();
         mostrarDatos();
+        cargarEstadoFavorito();
         configurarEventos();
     }
 
@@ -124,7 +133,6 @@ public class PeliculaActivity extends AppCompatActivity {
 
     private void iniciarComponentes() {
 
-        btnBack = findViewById(R.id.btnBack);
         btnFavorite = findViewById(R.id.btnFavorite);
 
         tvTituloPeli = findViewById(R.id.tvTituloPeli);
@@ -302,15 +310,6 @@ public class PeliculaActivity extends AppCompatActivity {
     private void configurarEventos() {
 
         // -----------------------------------------------------
-        // BOTÓN ATRÁS
-        // -----------------------------------------------------
-
-        btnBack.setOnClickListener(
-                v -> finish()
-        );
-
-
-        // -----------------------------------------------------
         // FAVORITO
         // -----------------------------------------------------
 
@@ -379,6 +378,23 @@ public class PeliculaActivity extends AppCompatActivity {
 
         esFavorita = !esFavorita;
 
+        String correo = sessionManager.getCorreo();
+        if (correo != null && peliculaId != null) {
+            if (peliculaGuardada == null) {
+                peliculaGuardada = new MiPeliculaEntity(
+                        correo,
+                        String.valueOf(peliculaId),
+                        titulo,
+                        esFavorita,
+                        "NINGUNO"
+                );
+                miPeliculaRepository.guardar(peliculaGuardada);
+            } else {
+                peliculaGuardada.favorita = esFavorita;
+                miPeliculaRepository.actualizar(peliculaGuardada);
+            }
+        }
+
 
         // Actualizar el icono
         actualizarBotonFavorito();
@@ -404,20 +420,24 @@ public class PeliculaActivity extends AppCompatActivity {
         }
 
 
-        /*
-         * IMPORTANTE:
-         *
-         * Actualmente el favorito solamente
-         * se mantiene mientras esta Activity
-         * esté abierta.
-         *
-         * Posteriormente conectaremos aquí:
-         *
-         * FavoritoRepository
-         *
-         * para guardar el favorito
-         * en la base de datos.
-         */
+    }
+
+    private void cargarEstadoFavorito() {
+        String correo = sessionManager.getCorreo();
+        if (correo == null || peliculaId == null) {
+            return;
+        }
+
+        miPeliculaRepository.todas(correo).observe(this, peliculas -> {
+            for (MiPeliculaEntity pelicula : peliculas) {
+                if (String.valueOf(peliculaId).equals(pelicula.peliculaId)) {
+                    peliculaGuardada = pelicula;
+                    esFavorita = pelicula.favorita;
+                    actualizarBotonFavorito();
+                    return;
+                }
+            }
+        });
     }
 
 

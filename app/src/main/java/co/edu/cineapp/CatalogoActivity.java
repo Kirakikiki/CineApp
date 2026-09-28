@@ -100,7 +100,7 @@ public class CatalogoActivity extends AppCompatActivity {
         boolean todas = generoActual.equalsIgnoreCase("Todas");//revisa si "Todas" esta sleeccionado
 
         for (Pelicula pelicula : todasLasPeliculas) { //Revisa cada pelicula
-            boolean coincideGenero = todas || pelicula.getGenero().equalsIgnoreCase(generoActual);//revisa si el genro si coincide
+            boolean coincideGenero = todas || pelicula.getNombreGenero().equalsIgnoreCase(generoActual);//revisa si el genro si coincide
             boolean coincideTitulo = pelicula.getTitulo().toLowerCase().contains(textoBusqueda); // revisa si el titulo tiene lo que se esta buscando
             if (coincideGenero && coincideTitulo) {
                 filtradas.add(pelicula); //agrega la pelicula
@@ -113,11 +113,13 @@ public class CatalogoActivity extends AppCompatActivity {
     private void abrirInformacion(Pelicula pelicula){ //Abre la informacion (lo usa el adaptador y el boton)
         Intent intent = new Intent(this, PeliculaActivity.class) ; //Crea el intent Conexion a la pantalla
         intent.putExtra("titulo", pelicula.getTitulo()); //Envia el titulo
-        intent.putExtra("director", pelicula.getDirector());
         intent.putExtra("sinopsis", pelicula.getSinopsis());
         intent.putExtra("anio", pelicula.getAnio());
-        intent.putExtra("genero", pelicula.getGenero());
-        intent.putExtra("duracion", pelicula.getDuracion());
+        intent.putExtra("genero", pelicula.getNombreGenero());
+        intent.putExtra("duracion", pelicula.getDuracionTexto());
+        intent.putExtra("clasificacion", pelicula.getClasificacion());
+        intent.putExtra("posterUrl", pelicula.getPosterUrl());
+        intent.putExtra("trailerUrl", pelicula.getTrailerUrl());
         startActivity(intent);//abre la pantalla
     }
 
