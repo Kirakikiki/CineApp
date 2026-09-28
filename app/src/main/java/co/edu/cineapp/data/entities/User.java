@@ -1,54 +1,37 @@
 package co.edu.cineapp.data.entities;
 
+// Usuario tal como lo maneja la API (PostgreSQL).
+// No lleva contraseña: la autenticación la hace Firebase.
 public class User {
-    // Declaración de atributos
-    private String name;
+    private Long id;
+    private String nombre;
     private String email;
     private String password;
     private byte status;
+    private String firebaseUid;
 
-    //Metodos contructores
     public User() {
     }
 
-    public User(String name, String email, String password) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
-    }
-
-    public User(String name, String email, String password, byte status) {
-        this.name = name;
+    public User(String nombre, String email, String password, byte status, String firebaseUid) {
+        this.nombre = nombre;
         this.email = email;
         this.password = password;
         this.status = status;
+        this.firebaseUid = firebaseUid;
     }
 
-    // Metodos de acceso
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public String getName() {
-        return name;
-    }
+    public String getNombre() { return nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
+    public String getPassword(){return password; }
+    public void setPassword(String password){this.password = password; }
 
     public byte getStatus() {
         return status;
@@ -58,14 +41,6 @@ public class User {
         this.status = status;
     }
 
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("User{");
-        sb.append("name='").append(name).append('\'');
-        sb.append(", email='").append(email).append('\'');
-        sb.append(", password='").append(password).append('\'');
-        sb.append(", status=").append(status);
-        sb.append('}');
-        return sb.toString();
-    }
+    public String getFirebaseUid() { return firebaseUid; }
+    public void setFirebaseUid(String firebaseUid) { this.firebaseUid = firebaseUid; }
 }

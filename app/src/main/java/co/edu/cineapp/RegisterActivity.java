@@ -1,6 +1,7 @@
 package co.edu.cineapp;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -16,14 +17,24 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
+import co.edu.cineapp.data.entities.User;
+import co.edu.cineapp.data.entities.User;
+import co.edu.cineapp.data.remote.RetrofitClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class RegisterActivity extends AppCompatActivity {
 
+    private static final String TAG = "RegisterActivity";
+
     private EditText etNombre;
-    private EditText etCorreo;
+    private EditText etEmail;
     private EditText etPassword;
     private EditText etConfirmPassword;
     private Button btnRegistrarse;
     private TextView tvVolverLogin;
+    private String firebaseUid;
 
     private FirebaseAuth mAuth;
 
@@ -65,7 +76,7 @@ public class RegisterActivity extends AppCompatActivity {
     private void iniciarComponentes() {
 
         etNombre = findViewById(R.id.etNombre);
-        etCorreo = findViewById(R.id.etCorreo);
+        etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
         etConfirmPassword = findViewById(R.id.etConfirmPassword);
         btnRegistrarse = findViewById(R.id.btnRegistrarse);
@@ -86,8 +97,8 @@ public class RegisterActivity extends AppCompatActivity {
         String nombre =
                 etNombre.getText().toString().trim();
 
-        String correo =
-                etCorreo.getText().toString().trim();
+        String email =
+                etEmail.getText().toString().trim();
 
         String password =
                 etPassword.getText().toString();
@@ -103,10 +114,10 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
-        if (correo.isEmpty()) {
+        if (email.isEmpty()) {
 
-            etCorreo.setError("Ingrese su correo electrónico");
-            etCorreo.requestFocus();
+            etEmail.setError("Ingrese su correo electrónico");
+            etEmail.requestFocus();
 
             return;
         }
@@ -153,7 +164,7 @@ public class RegisterActivity extends AppCompatActivity {
         btnRegistrarse.setEnabled(false);
 
         // Crear usuario en Firebase Authentication
-        mAuth.createUserWithEmailAndPassword(correo, password)
+        mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
 
                     if (task.isSuccessful()) {
@@ -163,6 +174,11 @@ public class RegisterActivity extends AppCompatActivity {
                         // Guardar el nombre en el perfil de Firebase
                         if (user != null) {
 
+                            // Guardamos el uid ahora, porque más adelante
+                            // se cierra la sesión de Firebase.
+                            String firebaseUid = user.getUid();
+                            byte status = 1;
+
                             UserProfileChangeRequest profileUpdates =
                                     new UserProfileChangeRequest.Builder()
                                             .setDisplayName(nombre)
@@ -171,44 +187,28 @@ public class RegisterActivity extends AppCompatActivity {
                             user.updateProfile(profileUpdates)
                                     .addOnCompleteListener(profileTask -> {
 
-                                        Toast.makeText(
-                                                RegisterActivity.this,
-                                                "Cuenta creada correctamente",
-                                                Toast.LENGTH_SHORT
-                                        ).show();
-
-                                        // Cerramos sesión porque queremos
-                                        // que el usuario entre desde el Login.
-                                        mAuth.signOut();
-
-                                        finish();
+                                        // Firebase ya creó la cuenta. Ahora
+                                        // también guardamos al usuario en la API.
+                                        registrarEnApi(nombre, email, password, status, firebaseUid);
                                     });
-
                         } else {
-
                             btnRegistrarse.setEnabled(true);
-
                             Toast.makeText(
                                     RegisterActivity.this,
                                     "Cuenta creada correctamente",
                                     Toast.LENGTH_SHORT
                             ).show();
-
                             finish();
                         }
-
                     } else {
 
                         btnRegistrarse.setEnabled(true);
-
                         String mensaje =
                                 "No se pudo crear la cuenta";
-
                         if (task.getException() != null) {
                             mensaje =
                                     task.getException().getMessage();
                         }
-
                         Toast.makeText(
                                 RegisterActivity.this,
                                 mensaje,
@@ -216,5 +216,65 @@ public class RegisterActivity extends AppCompatActivity {
                         ).show();
                     }
                 });
+    }
+
+    // Envía el usuario a cineapp-api (POST /api/usuarios) para que quede
+    // guardado en PostgreSQL, vinculado con Firebase por medio del uid.
+    private void registrarEnApi(String nombre, String email, String password, byte status, String firebaseUid) {
+
+        User nuevo = new User(nombre, email, password, status, firebaseUid);
+
+        RetrofitClient.getApiService().crearUsuario(nuevo)
+                .enqueue(new Callback<User>() {
+
+                    @Override
+                    public void onResponse(Call<User> call,
+                                           Response<User> response) {
+
+                        if (response.isSuccessful() && response.body() != null) {
+
+                            Toast.makeText(
+                                    RegisterActivity.this,
+                                    "Cuenta creada correctamente",
+                                    Toast.LENGTH_SHORT
+                            ).show();
+
+                        } else {
+
+                            Log.e(TAG, "La API respondió con código "
+                                    + response.code());
+
+                            Toast.makeText(
+                                    RegisterActivity.this,
+                                    "Cuenta creada, pero el servidor rechazó el perfil ("
+                                            + response.code() + ")",
+                                    Toast.LENGTH_LONG
+                            ).show();
+                        }
+
+                        terminarRegistro();
+                    }
+
+                    @Override
+                    public void onFailure(Call<User> call, Throwable t) {
+
+                        // Sin conexión con la API (servidor apagado, URL incorrecta...)
+                        Log.e(TAG, "No se pudo contactar la API", t);
+
+                        Toast.makeText(
+                                RegisterActivity.this,
+                                "Cuenta creada, pero no se pudo conectar con el servidor",
+                                Toast.LENGTH_LONG
+                        ).show();
+
+                        terminarRegistro();
+                    }
+                });
+    }
+
+    // Cerramos sesión porque queremos que el usuario entre desde el Login.
+    private void terminarRegistro() {
+        mAuth.signOut();
+        finish();
     }
 }

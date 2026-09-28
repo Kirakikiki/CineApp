@@ -22,7 +22,7 @@ public class UserRepository {
     //Metodo crud para insertar usuarios en la bd
     public long insertUser(User user){
         ContentValues values = new ContentValues();
-        values.put(UserContract.COLUMN_NAMES,user.getName());
+        values.put(UserContract.COLUMN_NAMES,user.getNombre());
         values.put(UserContract.COLUMN_EMAIL, user.getEmail());
         values.put(UserContract.COLUMN_PASSWORD, user.getPassword());
         values.put(UserContract.COLUMN_STATUS,STATUS_ACTIVE);
@@ -49,7 +49,7 @@ public class UserRepository {
         User user = null;
         if (cursor.moveToFirst()){ //si encontro alguna fila
             user = new User();
-            user.setName(cursor.getString(cursor.getColumnIndexOrThrow(UserContract.COLUMN_NAMES)));
+            user.setNombre(cursor.getString(cursor.getColumnIndexOrThrow(UserContract.COLUMN_NAMES)));
             user.setEmail(cursor.getString(cursor.getColumnIndexOrThrow(UserContract.COLUMN_EMAIL)));
             user.setStatus((byte) cursor.getInt(cursor.getColumnIndexOrThrow(UserContract.COLUMN_STATUS)));
         }
