@@ -1,6 +1,8 @@
 package co.edu.cineapp;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SearchView;
@@ -439,5 +441,19 @@ public class CatalogoActivity extends AppCompatActivity {
                 mensaje,
                 Toast.LENGTH_SHORT
         ).show();
+    }
+
+    private  boolean seleccionarMenu(MenuItem item){ //decide a cual pantalla abrir segun el item seleccionado
+        int id = item.getItemId(); //obtiene el id del item
+        if (id == R.id.nav_catalogos) { //si selecciona catalogo
+            return true; //pasa a la pantalla
+        } else if (id == R.id.nav_favoritas) {
+            startActivity(new Intent(this, FavoritosActivity.class));// abre favoritas
+            return true;
+        } else if (id == R.id.nav_mi_cine) {
+            startActivity(new Intent(this, MicineActivity.class));
+            return true;
+        }
+        return false;
     }
 }
