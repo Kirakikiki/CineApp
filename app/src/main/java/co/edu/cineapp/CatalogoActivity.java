@@ -1,5 +1,6 @@
 package co.edu.cineapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -8,7 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
-import android.widget.SearchView;
+import androidx.appcompat.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,12 +32,15 @@ import java.util.List;
 import java.util.Set;
 
 import co.edu.cineapp.data.model.FavoritoRepository;
+import co.edu.cineapp.data.remote.ApiCallback;
 import co.edu.cineapp.ui.adapter.PeliculaAdapter;
 import co.edu.cineapp.data.entities.Pelicula;
 import co.edu.cineapp.data.model.PeliculaRepository;
 
 //PeliculaAdapter. Listener es el activity se que tiene los metodos
 public class CatalogoActivity extends AppCompatActivity {
+    private Context context;
+    private final PeliculaRepository peliculaRepository = new PeliculaRepository();
     private RecyclerView rvPeliculas; //Cuadricula de peliculas
     private ChipGroup chipGroup; //Chips de género
     private Chip chip;
@@ -55,18 +59,50 @@ public class CatalogoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_catalogo);
+        /*
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
-        });
+        });*/
         initObjects();
         configurarLista();
+        cargarPeliculas();
         chipGroup.setOnCheckedStateChangeListener(this::seleccionarGenero);
         btnVerMas.setOnClickListener(this::abrirDestacada);
         btnNav.setOnItemSelectedListener(this::seleccionarMenu);
+        svSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                buscar(query);
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                buscar(newText);
+                return false;
+            }
+        });
     }
 
+    private void cargarPeliculas() {
+        peliculaRepository.getPeliculas(new ApiCallback<List<Pelicula>>() {
+            @Override
+            public void onSuccess(List<Pelicula> data) {
+                todasLasPeliculas.clear();
+                if (data != null) {
+                    todasLasPeliculas.addAll(data);
+                }
+                aplicarFiltros();
+            }
+            @Override
+            public void onError(String error) {
+                Toast.makeText(CatalogoActivity.this, error, Toast.LENGTH_LONG).show();
+                tvError.setVisibility(View.VISIBLE);
+                tvError.setText(error);
+            }
+        });
+    }
     private void configurarLista(){ //Prepara el ReclyclerView
         adaptador = new PeliculaAdapter(new ArrayList<>(todasLasPeliculas), this::abrirInformacion); //Crear el adaptador; al tocar una tarjeta llama a abrirInformacion
         rvPeliculas.setLayoutManager(new GridLayoutManager(this, 2)); //Cuadrícula de 2 columnas
@@ -100,7 +136,7 @@ public class CatalogoActivity extends AppCompatActivity {
         boolean todas = generoActual.equalsIgnoreCase("Todas");//revisa si "Todas" esta sleeccionado
 
         for (Pelicula pelicula : todasLasPeliculas) { //Revisa cada pelicula
-            boolean coincideGenero = todas || pelicula.getGenero().equalsIgnoreCase(generoActual);//revisa si el genro si coincide
+            boolean coincideGenero = todas || pelicula.getGenero().getNombre().equalsIgnoreCase(generoActual);//revisa si el genro si coincide
             boolean coincideTitulo = pelicula.getTitulo().toLowerCase().contains(textoBusqueda); // revisa si el titulo tiene lo que se esta buscando
             if (coincideGenero && coincideTitulo) {
                 filtradas.add(pelicula); //agrega la pelicula
@@ -113,11 +149,10 @@ public class CatalogoActivity extends AppCompatActivity {
     private void abrirInformacion(Pelicula pelicula){ //Abre la informacion (lo usa el adaptador y el boton)
         Intent intent = new Intent(this, PeliculaActivity.class) ; //Crea el intent Conexion a la pantalla
         intent.putExtra("titulo", pelicula.getTitulo()); //Envia el titulo
-        intent.putExtra("director", pelicula.getDirector());
         intent.putExtra("sinopsis", pelicula.getSinopsis());
         intent.putExtra("anio", pelicula.getAnio());
-        intent.putExtra("genero", pelicula.getGenero());
-        intent.putExtra("duracion", pelicula.getDuracion());
+        intent.putExtra("genero", pelicula.getGenero().getNombre());
+        intent.putExtra("duracion", pelicula.getDuracionMinutos());
         startActivity(intent);//abre la pantalla
     }
 
@@ -138,7 +173,7 @@ public class CatalogoActivity extends AppCompatActivity {
     private void initObjects(){
         rvPeliculas = findViewById(R.id.rvPeliculas);
         chipGroup = findViewById(R.id.chipGroup);
-
+        context = getApplicationContext();
         svSearch = findViewById(R.id.svSearch);
         tvError = findViewById(R.id.tvError);
         btnVerMas = findViewById(R.id.btnVerMas);
