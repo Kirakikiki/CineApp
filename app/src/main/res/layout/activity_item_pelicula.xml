@@ -20,4 +20,24 @@
         android:layout_marginTop="4dp"
         android:textColor="#FFFFFF"
         android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tvItemInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:maxLines="2"
+        android:textColor="#C8B6FF"
+        android:textSize="12sp" />
+
+    <ImageButton
+        android:id="@+id/btnItemFavorito"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="end"
+        android:background="@android:color/transparent"
+        android:contentDescription="Agregar a favoritos"
+        android:padding="10dp"
+        app:srcCompat="@drawable/outline_favorite_24"
+        app:tint="#FFFFFF" />
 </LinearLayout>
