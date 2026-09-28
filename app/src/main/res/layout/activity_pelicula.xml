@@ -29,17 +29,18 @@
                 app:srcCompat="@drawable/images__1_" />
 
             <ImageButton
-                android:id="@+id/btnBack"
+                android:id="@+id/btnFavorite"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:layout_gravity="top|start"
+                android:layout_gravity="top|end"
                 android:layout_margin="12dp"
                 android:background="@drawable/baseline_circle_24"
-                android:contentDescription="Atrás"
+                android:contentDescription="Agregar a favoritos"
                 android:padding="8dp"
                 android:scaleType="centerInside"
-                app:srcCompat="@drawable/outline_arrow_back_ios_new_24"
+                app:srcCompat="@drawable/outline_favorite_24"
                 app:tint="@android:color/white" />
+
 
             <ImageButton
                 android:id="@+id/btnFavorite"
