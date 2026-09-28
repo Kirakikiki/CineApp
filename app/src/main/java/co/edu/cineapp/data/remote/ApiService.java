@@ -1,19 +1,19 @@
-package co.edu.cineapp.edu.data.remote;
+package co.edu.cineapp.data.remote;
 
 import java.util.List;
 
-import co.edu.cineapp.edu.data.model.Genero;
-import co.edu.cineapp.edu.data.model.Pelicula;
-import co.edu.cineapp.edu.data.model.PromedioResena;
-import co.edu.cineapp.edu.data.model.Resena;
-import co.edu.cineapp.edu.data.model.Usuario;
+import co.edu.cineapp.data.entities.Genero;
+import co.edu.cineapp.data.entities.Pelicula;
+import co.edu.cineapp.data.entities.PromedioResena;
+import co.edu.cineapp.data.entities.Resena;
+import co.edu.cineapp.data.entities.User;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
-import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
-import retrofit2.http.DELETE;
+import retrofit2.http.Path;
 
 // Un metodo por cada endpoint de cineapp-api. Los nombres y rutas deben
 // coincidir EXACTAMENTE con los @RequestMapping del backend.
@@ -41,10 +41,10 @@ public interface ApiService {
 
     // ---- Usuarios ----
     @GET("api/usuarios/firebase/{firebaseUid}")
-    Call<Usuario> obtenerUsuarioPorFirebaseUid(@Path("firebaseUid") String firebaseUid);
+    Call<User> obtenerUsuarioPorFirebaseUid(@Path("firebaseUid") String firebaseUid);
 
     @POST("api/usuarios")
-    Call<Usuario> crearUsuario(@Body Usuario usuario);
+    Call<User> crearUsuario(@Body User usuario);
 
     // ---- Resenas ----
     @GET("api/resenas/pelicula/{peliculaId}")
