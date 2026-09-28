@@ -1,6 +1,8 @@
 package co.edu.cineapp;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -60,15 +62,18 @@ public class CatalogoActivity extends AppCompatActivity {
         });
         initObjects();
         configurarLista();
-        chipGroup.setOnClickListener(this::seleccionarGenero);
+        chipGroup.setOnCheckedStateChangeListener(this::seleccionarGenero);
+        btnVerMas.setOnClickListener(this::abrirDestacada);
+        btnNav.setOnItemSelectedListener(this::seleccionarMenu);
     }
 
     private void configurarLista(){ //Prepara el ReclyclerView
-        adaptador = new PeliculaAdapter(new ArrayList<>(todasLasPeliculas), this::abririnformacion); //Crear el adaptador; al tocar una tarjeta llama a abrirInformacion
+        adaptador = new PeliculaAdapter(new ArrayList<>(todasLasPeliculas), this::abrirInformacion); //Crear el adaptador; al tocar una tarjeta llama a abrirInformacion
         rvPeliculas.setLayoutManager(new GridLayoutManager(this, 2)); //Cuadrícula de 2 columnas
         rvPeliculas.setAdapter(adaptador); //Conecta el adaptador
 
     }
+
 
     private void seleccionarGenero(ChipGroup grupo, List<Integer> idSelececciondados) { //Se llama cuando cambia el chip seleccionado
         if (idSelececciondados.isEmpty()){ //Por seguridad: si no hay ningun chip seleccionado
@@ -78,6 +83,12 @@ public class CatalogoActivity extends AppCompatActivity {
         Chip chip = grupo.findViewById(idChip); //Busca el chip dentro del grupo
         generoActual = chip.getText().toString(); // Guarda el genero
         aplicarFiltros(); //Actualiza la lista con el nuevo genero
+    }
+
+    private void abrirDestacada(View view){//metodo para el boton vermas
+        if (!todasLasPeliculas.isEmpty()) {//Evita un error si la lista esta vacia
+            abrirInformacion(todasLasPeliculas.get(0));
+        }
     }
 
     private void buscar(String texto) {//Guarda el texto buscado
@@ -97,6 +108,31 @@ public class CatalogoActivity extends AppCompatActivity {
         }
         adaptador.actualizarLista(filtradas);//Muestra los resultados
         tvError.setVisibility(filtradas.isEmpty() ? View.VISIBLE : View.GONE); //Muestra el error solo si no hay nada
+    }
+
+    private void abrirInformacion(Pelicula pelicula){ //Abre la informacion (lo usa el adaptador y el boton)
+        Intent intent = new Intent(this, PeliculaActivity.class) ; //Crea el intent Conexion a la pantalla
+        intent.putExtra("titulo", pelicula.getTitulo()); //Envia el titulo
+        intent.putExtra("director", pelicula.getDirector());
+        intent.putExtra("sinopsis", pelicula.getSinopsis());
+        intent.putExtra("anio", pelicula.getAnio());
+        intent.putExtra("genero", pelicula.getGenero());
+        intent.putExtra("duracion", pelicula.getDuracion());
+        startActivity(intent);//abre la pantalla
+    }
+
+    private  boolean seleccionarMenu(MenuItem item){ //decide a cual pantalla abrir segun el item seleccionado
+        int id = item.getItemId(); //obtiene el id del item
+        if (id == R.id.nav_catalogos) { //si selecciona catalogo
+            return true; //pasa a la pantalla
+        } else if (id == R.id.nav_favoritas) {
+            startActivity(new Intent(this, FavoritosActivity.class));// abre favoritas
+            return true;
+        } else if (id == R.id.nav_mi_cine) {
+            startActivity(new Intent(this, MicineActivity.class));
+            return true;
+        }
+        return false;
     }
 
     private void initObjects(){
