@@ -49,10 +49,10 @@ public class MainActivity extends AppCompatActivity {
         configurarEventos();
     }
 
-    /**
-     * Configura los márgenes para evitar que los elementos
-     * queden debajo de la barra de estado o navegación.
-     */
+
+    //  Configura los márgenes para evitar que los elementos
+    // queden debajo de la barra de estado o navegación.
+
     private void configurarVentana() {
 
         ViewCompat.setOnApplyWindowInsetsListener(
@@ -75,9 +75,9 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 
-    /**
-     * Inicializa los componentes del XML.
-     */
+
+    //   Inicializa los componentes del XML.
+
     private void iniciarComponentes() {
 
         etCorreo = findViewById(R.id.etCorreo);
@@ -111,10 +111,9 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    /**
-     * Valida los datos ingresados y realiza el inicio de sesión
-     * mediante Firebase Authentication.
-     */
+
+    // Valida los datos ingresados y realiza el inicio de sesión
+    // mediante Firebase Authentication.
     private void validarLogin() {
 
         // Obtener correo
@@ -195,9 +194,9 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    /**
-     * Abre el catálogo después de iniciar sesión correctamente.
-     */
+
+    //   Abre el catálogo después de iniciar sesión correctamente.
+
     private void abrirCatalogo() {
 
         Intent intent = new Intent(
