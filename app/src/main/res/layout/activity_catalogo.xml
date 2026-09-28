@@ -68,16 +68,9 @@
 
             </LinearLayout>
 
-            <EditText
-                android:id="@+id/etSearch"
+            <SearchView
                 android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:layout_marginHorizontal="16dp"
-                android:background="#FFFFFF"
-                android:ems="10"
-                android:hint="@string/etSearch"
-                android:inputType="text"
-                android:text="" />
+                android:layout_height="match_parent" />
 
             <HorizontalScrollView
                 android:layout_width="match_parent"
@@ -276,7 +269,7 @@
                                 app:srcCompat="@drawable/images__1_" />
 
                             <ImageButton
-                                android:id="@+id/imageButton"
+                                android:id="@+id/btnFav"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
                                 android:layout_gravity="top|end"
@@ -332,7 +325,7 @@
                                 app:srcCompat="@drawable/images__1_" />
 
                             <ImageButton
-                                android:id="@+id/imageButton"
+                                android:id="@+id/btnFav"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
                                 android:layout_gravity="top|end"
@@ -393,7 +386,7 @@
                                 app:srcCompat="@drawable/images__1_" />
 
                             <ImageButton
-                                android:id="@+id/imageButton"
+                                android:id="@+id/btnFav"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
                                 android:layout_gravity="top|end"
@@ -449,7 +442,7 @@
                                 app:srcCompat="@drawable/images__1_" />
 
                             <ImageButton
-                                android:id="@+id/imageButton"
+                                android:id="@+id/btnFav"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
                                 android:layout_gravity="top|end"
