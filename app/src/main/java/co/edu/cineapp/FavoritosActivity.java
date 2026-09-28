@@ -27,7 +27,7 @@ import co.edu.cineapp.utils.SessionManager;
 public class FavoritosActivity extends AppCompatActivity {
 
     private LinearLayout listaFavoritas;
-    private TextView estadoFavoritas;
+    private LinearLayout estadoFavoritas;
     private MiPeliculaRepository miPeliculaRepository;
     private PeliculaRepository peliculaRepository;
     private SessionManager sessionManager;
