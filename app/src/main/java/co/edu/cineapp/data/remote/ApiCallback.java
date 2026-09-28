@@ -1,4 +1,4 @@
-package co.edu.cineapp.edu.data.remote;
+package co.edu.cineapp.data.remote;
 
 // Interfaz simple para recibir el resultado de una llamada a la API desde
 // cualquier Fragment/Activity, sin exponer las clases propias de Retrofit.

@@ -1,8 +1,8 @@
-package co.edu.cineapp.edu.data.remote;
+package co.edu.cineapp.data.remote;
 
 import java.util.concurrent.TimeUnit;
 
-import co.edu.cineapp.edu.utils.Constants;
+import co.edu.cineapp.utils.Constants;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -17,8 +17,8 @@ public class RetrofitClient {
     private RetrofitClient() {
     }
 
-    public static ApiService getApiService() {
-        return getRetrofit().create(ApiService.class);
+    public static co.edu.cineapp.data.remote.ApiService getApiService() {
+        return getRetrofit().create(co.edu.cineapp.data.remote.ApiService.class);
     }
 
     private static Retrofit getRetrofit() {

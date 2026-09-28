@@ -53,8 +53,8 @@
 
     <EditText
         android:id="@+id/etCorreo"
-        android:layout_width="0dp"
-        android:layout_height="56dp"
+        android:layout_width="297dp"
+        android:layout_height="53dp"
         android:layout_marginStart="18dp"
         android:layout_marginTop="38dp"
         android:layout_marginEnd="18dp"
